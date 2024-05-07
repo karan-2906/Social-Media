@@ -7,7 +7,7 @@ import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const url = process.env.REACT_APP_BASE_URL;
 
-const host = `http://localhost:4000/api/v1/auth`
+const host = `${url}/api/v1/auth`
 
 
 export function useLogin() {
