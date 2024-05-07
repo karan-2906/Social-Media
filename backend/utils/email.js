@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer');
 require('dotenv').config();
-const { gmailContent, OtpContent } = require('./EmailTemplate')
+const { gmailContent } = require('./EmailTemplate')
 const secret_key = process.env.JWT_SECRET;
-const { promotionalEmail } = require('./EmailTemplate')
+
 
 
 
@@ -43,71 +43,9 @@ const sendVerificationEmail = async (recipientEmail, verificationToken) => {
 
 
 
-const resetPasswordEmail = async (receipentEmail, otpcode) => {
-
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWORD,
-        }
-    });
-
-    const emailcontent = OtpContent(otpcode);
-    await transporter.sendMail({
-        from: process.env.EMAIL,
-        to: receipentEmail,
-        subject: 'Reset Password',
-        html: emailcontent
-    });
-}
-
-const generateOTP = () => {
-    const otpLength = 6;
-    const characters = '0123456789';
-    let otpcode = '';
-    for (let i = 0; i < otpLength; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        otpcode += characters[randomIndex];
-    }
-    return otpcode;
-}
-
-
-
-
-
-const sendPromotionalEmail = async (recipientEmail, TopUsers) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.PASSWORD,
-            },
-        });
-
-        const emailContent = promotionalEmail(TopUsers);
-
-        await transporter.sendMail({
-            from: process.env.EMAIL,
-            to: recipientEmail,
-            subject: 'BoostedUsers Posts',
-            html: emailContent,
-        });
-
-        console.log("Email has been sent  " + recipientEmail);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
 
 
 module.exports = {
     generateverificationToken,
     sendVerificationEmail,
-    generateOTP,
-    resetPasswordEmail,
-    sendPromotionalEmail
 }

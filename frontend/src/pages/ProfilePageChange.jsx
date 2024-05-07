@@ -13,7 +13,7 @@ import { useFollowUnfollow } from '../hooks/followUnfollow';
 import ProfilePostsComponent from '../components/ProfilePageComponets/ProfilePosts';
 import ProfileCard from '../components/ProfilePageComponets/ProfileCard';
 
-const host = process.env.BACKEND_URL;
+const host = process.env.REACT_APP_BASE_URL;
 
   
 

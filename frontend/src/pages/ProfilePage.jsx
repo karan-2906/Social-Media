@@ -10,7 +10,7 @@ import { useUserInfo, useUpdateProfile } from "../hooks/auth";
 import { useDelete, useUpdate } from "../hooks/posts";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { useFollowUnfollow } from "../hooks/followUnfollow";
-const host = process.env.BACKEND_URL;
+const host = process.env.REACT_APP_BASE_URL;
 
 const ProfilePage = () => {
   const [posts, setPosts] = useState([]);

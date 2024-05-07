@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-const url = process.env.BACKEND_URL;
+const url = process.env.REACT_APP_BASE_URL;
 
 
 const host = `${url}/api/v1/comments`

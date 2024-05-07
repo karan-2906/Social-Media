@@ -8,7 +8,7 @@ import PostCard from '../components/PostCard';
 import { useAddPost } from '../hooks/posts';
 
 import BackToTopButton from '../components/BackToTopButton';
-const url = process.env.BACKEND_URL;
+const url = process.env.REACT_APP_BASE_URL;
 
 const host = `${url}/api/v1/posts`
 

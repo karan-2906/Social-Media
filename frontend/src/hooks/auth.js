@@ -5,9 +5,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom';
 import { faL } from "@fortawesome/free-solid-svg-icons";
 
-const url = process.env.BACKEND_URL;
+const url = process.env.REACT_APP_BASE_URL;
 
-const host = `${url}/api/v1/auth`
+const host = `http://localhost:4000/api/v1/auth`
 
 
 export function useLogin() {

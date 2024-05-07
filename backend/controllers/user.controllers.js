@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const User = require('../models/user.models')
 const { generateverificationToken, sendVerificationEmail } = require('../utils/email')
 require('dotenv').config();
-
+const { successFullVerification } = require('../utils/EmailTemplate')
 
 
 
@@ -66,9 +66,10 @@ const verifyemail = async (req, res) => {
         user.verificationToken = null;
         await user.save();
 
-        // const congratulationContent = successFullVerification();
+        const congratulationContent = successFullVerification();
 
-        // res.send(congratulationContent);
+        res.send(congratulationContent);
+
 
     } catch (error) {
         res.status(500).json({ error: 'An error occurred during email verification.' });

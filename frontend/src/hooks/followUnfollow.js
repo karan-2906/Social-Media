@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-const url = process.env.BACKEND_URL;
+const url = process.env.REACT_APP_BASE_URL;
 
 
 

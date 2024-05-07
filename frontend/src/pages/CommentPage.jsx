@@ -5,7 +5,7 @@ import Sidebar from '../components/Sidebar';
 import { useParams } from 'react-router-dom';
 import { useAddComments,useDeleteComment } from '../hooks/comments';
 import { useUserInfo } from '../hooks/auth';
-const host = process.env.BACKEND_URL;
+const host = process.env.REACT_APP_BASE_URL;
 
 
 
