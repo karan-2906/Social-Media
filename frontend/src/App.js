@@ -1,30 +1,37 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import HomePage from './pages/HomePage';
-import ProfilePage from './pages/ProfilePage';
-import Sidebar from './components/Sidebar';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PrivateRoutes from "./utils/PrivateRoutes";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
-const App = () => {
+import ProfilePage from "./pages/ProfilePage";
+import PageNotFound from "./pages/PageNotFound";
+import CommentsPage from "./pages/CommentPage";
+import ProfilePageChange from "./pages/ProfilePageChange";
+
+function App() {
   return (
-    <>
-      <Router>
-        <div className="flex text-black">
-          <Sidebar />
-          {/* <HomePage/> */}
-          <div className='mx-auto mt-5 w-3/4'>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/Signup" element={<SignupPage />} />
-            </Routes>
-          </div>
-        </div>
-      </Router>
-    </>
+    <Router>
+      <ToastContainer />
+
+      <div className="  overflow-hidden">
+        <Routes>
+          <Route element={<PrivateRoutes />}>
+            <Route element={<Home />} path="/" />
+            <Route element={<ProfilePage />} path="/profile/:userID" />
+            <Route element={<CommentsPage />} path="/comments/:postID" />
+
+          </Route>
+          <Route element={<Login />} path="/login" />
+          <Route element={<Signup />} path="/signup" />
+          <Route element={<PageNotFound />} path="*" />
+        </Routes>
+      </div>
+    </Router>
   );
-};
+}
 
 export default App;

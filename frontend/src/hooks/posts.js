@@ -2,9 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+const url = process.env.BACKEND_URL;
 
 
-const host = `https://anonymous-social-bt77.onrender.com/api/v1/posts`
+
+const host = `${url}/api/v1/posts`
 const authToken = localStorage.getItem('auth');
 
 

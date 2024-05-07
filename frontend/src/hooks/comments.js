@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-const host = `https://anonymous-social-bt77.onrender.com/api/v1/comments`
+const url = process.env.BACKEND_URL;
+
+
+const host = `${url}/api/v1/comments`
 
 
 export function useAddComments() {

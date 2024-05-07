@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+const url = process.env.BACKEND_URL;
 
 
-const host = `https://anonymous-social-bt77.onrender.com/api/v1/auth/userfollowunfollow`
+
+const host = `${url}/api/v1/auth/userfollowunfollow`
 export function useFollowUnfollow() {
     const [isfollowLoading, setisfollowLoading] = useState(false);
     const [error, setError] = useState();

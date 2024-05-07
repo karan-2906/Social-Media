@@ -3,10 +3,11 @@ import { useState } from "react";
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom';
-// import { faL } from "@fortawesome/free-solid-svg-icons";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
+const url = process.env.BACKEND_URL;
 
-const host = `http://localhost:4000/api/v1/auth`
+const host = `${url}/api/v1/auth`
 
 
 export function useLogin() {
@@ -68,7 +69,7 @@ export function useSignup() {
     const [error, setError] = useState(null);
     const [isSignedUp, setIsSignedUp] = useState(false);
 
-    const signup = async (username, password) => {
+    const signup = async (username, password, email) => {
         setisLoading(true);
         setError(null);
         try {
@@ -79,6 +80,7 @@ export function useSignup() {
                 },
                 body: JSON.stringify({
                     username,
+                    email,
                     password
                 }),
             });
@@ -188,3 +190,4 @@ export function useUpdateProfile() {
 
     return { isUpdatingProfile, error, isUpdated, updateProfile }
 }
+

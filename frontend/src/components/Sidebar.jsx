@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import {
+  RiHome2Line,
+  RiCompass3Line,
+  RiBellLine,
+  RiLogoutCircleLine,
+} from "react-icons/ri";
 import { useUserInfo } from "../hooks/auth";
 import SkeletonSidebar from "./Skeletons/SkeletonSidebar";
+import { FaUser } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import "./Skeletons/sbar.css";
 
 const Sidebar = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { userInfo, user } = useUserInfo();
   const [sidebarActive, setSidebarActive] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
-
-  const toggleDarkMode = () => {
-    setDarkMode(prevMode => !prevMode);
-    // You can implement logic to toggle dark theme in your application here
-  };
 
   useEffect(() => {
     userInfo()
@@ -46,33 +48,106 @@ const Sidebar = () => {
   }
 
   return (
-    <div className={`h-screen w-1/6 flex flex-col pt-8 mr-4 p-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-200'}`}>
-      <p className='pb-2 text-xl font-semibold'>Welcome</p>
-      <div className='flex items-center gap-4 font-semibold'>
-        <img src={user.avatar.url}
-          alt={user.username} className="w-10 h-10 rounded-full" />
-        <p className='text-center'>John Doe</p>
-      </div>
-      <div className='flex items-center flex-col mt-4'>
-        <ul>
-          <li className="mb-4">
-            <Link to="/" className={`block ${darkMode ? 'text-white hover:text-gray-300' : 'text-blue-500 hover:text-blue-700'}`}>Home</Link>
-          </li>
-          <li className="mb-4">
-            <Link to="/profile" className={`block ${darkMode ? 'text-white hover:text-gray-300' : 'text-blue-500 hover:text-blue-700'}`}>Profile</Link>
-          </li>
-        </ul>
-        <Link to="/login" className={`block ${darkMode ? 'text-red-500 hover:text-red-300' : 'text-red-500 hover:text-red-700'}`}>Logout</Link>
-      </div>
-      {/* Dark mode toggle */}
-      <div className="mt-auto">
-        <label className="flex items-center cursor-pointer">
-          <span className="mr-2">Dark Mode</span>
-          <input type="checkbox" className="form-checkbox h-5 w-5 text-blue-500" checked={darkMode} onChange={toggleDarkMode} />
-        </label>
+    <div>
+      <br/>
+       <div className={`sidebar-toggle ${sidebarActive ? 'active' : ''}`}>
+      <button id="sidebar-toggle-button" onClick={handleToggleSidebar}>
+       &nbsp; &nbsp; &nbsp; &nbsp; <i class="fa-solid fa-bars fa-xl"/> 
+      </button>
+    </div>
+
+    <div className={`sidebar closeS text-white fixed top-0 w-1/6 p-4 h-screen border-slate-300 border-2 rounded-lg ${sidebarActive ? 'active' : ''}`} style={{backgroundColor: '#030303'}}>
+      <button className="close-sidebar-button" onClick={handleToggleSidebar}>
+      <i class="fa-solid fa-xmark"/>
+      </button>
+      {/* Rest of your sidebar content */}
+    </div>
+
+
+      <div
+        className={`sidebar text-white fixed top-0 w-1/6 p-4 h-screen border-slate-300 border-2 rounded-lg ${
+          sidebarActive ? "active" : ""
+        }`}
+        style={{ backgroundColor: "#030303" }}>
+        {/* Rest of your sidebar content */}
+        <div className="flex items-center mb-8">
+        <br/><br/><br/><br/><br/><br/>
+          <NavLink to={`/profile/${user._id}`}>
+            <div className="h-10 w-10 rounded-full bg-white mr-3">
+              <img
+                src={user.avatar.url}
+                alt={user.username}
+                className="h-full w-full object-cover rounded-full"
+              />
+            </div>
+          </NavLink>
+          <div>
+           
+            <p className="font-bold text-xl">Anonymous Social</p>
+            <p className="text-sm">Welcome, {user.username}!</p>
+          </div>
+        </div>
+        <ul className="space-y-4">
+        <li className="flex items-center space-x-3">
+         <FaUser className='w-6 h-6 fill-current' />
+          <NavLink to={`/profile/${user._id}`}>Profile</NavLink>
+        </li>
+        <li className="flex items-center space-x-3">
+          <RiCompass3Line className="w-6 h-6 fill-current" />
+          <NavLink to="/">Home</NavLink>
+        </li>
+        <li className="flex items-center space-x-3" onClick={handleLogout}>
+          <RiLogoutCircleLine className="w-6 h-6 fill-current" />
+          <NavLink to="/login">Logout</NavLink>
+        </li>
+      </ul>
       </div>
     </div>
   );
 };
 
 export default Sidebar;
+
+{
+  /* <>
+<div className={`sidebar-toggle ${sidebarActive ? 'active' : ''}`}>
+        <button id="sidebar-toggle-button" onClick={handleToggleSidebar}>
+          Toggle Sidebar
+        </button>
+      </div>
+
+    <div className=" text-white fixed top-0 w-1/6 p-4 h-screen border-slate-300 border-2 rounded-lg " style={{backgroundColor : '#030303'}}>
+      <div className="flex items-center mb-8">
+      <NavLink to={`/profile/${user._id}`}>
+        <div className="h-10 w-10 rounded-full bg-white mr-3">
+          <img
+            src={user.avatar.url}
+            alt={user.username}
+            className="h-full w-full object-cover rounded-full"
+          />
+        </div>
+        </NavLink>
+        <div>
+          <p className="font-bold text-xl">Anonymous Social</p>
+          <p className="text-sm">Welcome, {user.username}!</p>
+        </div>
+      </div>
+
+
+      <ul className="space-y-4">
+        <li className="flex items-center space-x-3">
+         <FaUser className='w-6 h-6 fill-current' />
+          <NavLink to={`/profile/${user._id}`}>Profile</NavLink>
+        </li>
+        <li className="flex items-center space-x-3">
+          <RiCompass3Line className="w-6 h-6 fill-current" />
+          <NavLink to="/">Home</NavLink>
+        </li>
+        <li className="flex items-center space-x-3" onClick={handleLogout}>
+          <RiLogoutCircleLine className="w-6 h-6 fill-current" />
+          <NavLink to="/login">Logout</NavLink>
+        </li>
+      </ul>
+    </div>
+    </> */
+}

@@ -1,54 +1,53 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/user.models')
-const { sendVerificationEmail, generateverificationToken, resetPasswordEmail, generateOTP } = require('../utils/email')
-const { successFullVerification } = require('../utils/EmailTemplate')
+const { generateverificationToken, sendVerificationEmail } = require('../utils/email')
+require('dotenv').config();
+
 
 
 
 const registerUser = async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, password, email } = req.body;
     try {
         if (!username || !password || !email) {
-            return res.status(400).json({ message: "Not all fields have been entered" })
-        }
-
-        if (password.length < 6) {
-
-            return res.status(400).json({ message: "The password needs to be at least 6 characters long" })
+            return res.status(400).json({ msg: "Not all fields have been entered" })
         }
 
         const existedUser = await User.findOne({
-            $or: [{ username }, { email }],
+            $or: [{ username }],
         });
+
         if (existedUser) {
-            return res.status(400).json({ message: "An account with this username or email  already exists" })
+            return res.status(400).json({ msg: "An account with this username  already exists" })
         }
 
-        else {
-            const hashedPassword = await bcrypt.hash(password, 10)
-            const verificationToken = generateverificationToken(email);
-            const newUser = await User.create({
-                username,
-                email,
-                password: hashedPassword,
-                verificationToken
-            })
-            await sendVerificationEmail(email, verificationToken);
-            const token = jwt.sign({
-                user: newUser
-            },
+       
 
-                process.env.JWT_SECRET,
-                {
-                    expiresIn: "1d"
-                }
-            )
-            res.json({ message: 'Registration successful. Please check your email for verification.', verificationToken: verificationToken, user: newUser, token: token });
-        }
+        const verificationToken = generateverificationToken(email);
+
+
+        await sendVerificationEmail(email, verificationToken);
+        const newUser = await User.create({
+            username,
+            email,
+            password,
+            verificationToken
+        })
+
+        const token = jwt.sign({
+            user: newUser
+        },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1d"
+            }
+        )
+
+        res.status(201).json({ user: newUser, token: token, mssg: "new user created" })
 
     } catch (error) {
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ error: error.message })
         console.log(error);
     }
 }
@@ -57,6 +56,7 @@ const verifyemail = async (req, res) => {
     try {
         const tokenId = req.params.tokenId;
         const user = await User.findOne({ verificationToken: tokenId });
+        console.log(user)
 
         if (!user) {
             return res.status(404).json({ error: 'Invalid verification token.' });
@@ -66,9 +66,9 @@ const verifyemail = async (req, res) => {
         user.verificationToken = null;
         await user.save();
 
-        const congratulationContent = successFullVerification();
+        // const congratulationContent = successFullVerification();
 
-        res.send(congratulationContent);
+        // res.send(congratulationContent);
 
     } catch (error) {
         res.status(500).json({ error: 'An error occurred during email verification.' });
@@ -77,53 +77,43 @@ const verifyemail = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
 
+    const { username, password } = req.body;
     try {
-        if (!email || !password) {
-            return res.status(400).json({ message: "Not all fields have been entered" });
+        if (!username | !password) {
+            return res.status(400).json({ msg: "Not all fields have been entered" })
         }
-
-        const user = await User.findOne({ email });
-        console.log(user)
+        const user = await User.findOne({
+            username
+        })
 
         if (!user) {
-            return res.status(400).json({ message: "Account with this email does not exist!!" });
-        }
-
-        if (!user.isVerified) {
-            return res.status(400).json({ message: "Please verify your email to login" });
+            return res.status(400).json({ msg: "No account with this username does not exist!!" })
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        console.log(isPasswordValid)
 
         if (!isPasswordValid) {
-            return res.status(400).json({ message: "Invalid credentials" });
+            return res.status(400).json({ msg: "Invalid credentials" })
         }
 
-        // Sign the JWT token
-        const token = jwt.sign(
-            {
-                user: user,
-            },
+        const token = jwt.sign({
+            user: user
+        },
             process.env.JWT_SECRET,
             {
-                expiresIn: "1d",
+                expiresIn: "1d"
             }
-        );
+        )
 
-        res.status(200).json({
-            user: user,
-            token: token,
-            message: "User logged in",
-        });
+        res.status(200).json({ user: user, token: token, mssg: "user logged in" })
 
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ error: error.message })
         console.log(error);
     }
-};
+}
+
 
 const updateavatar = async (req, res) => {
     const { avatar } = req.body;
@@ -237,8 +227,8 @@ const editProfile = async (req, res) => {
 
 module.exports = {
     registerUser,
-    loginUser,
     verifyemail,
+    loginUser,
     updateavatar,
     userInfo,
     userProfile,
