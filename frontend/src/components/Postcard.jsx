@@ -3,7 +3,6 @@ import { FaThumbsUp, FaComment } from 'react-icons/fa';
 import { useLikeDislike } from '../hooks/likes';
 import { useUserInfo } from '../hooks/auth';
 import { FaBookmark } from 'react-icons/fa';
-
 import SkeletonPostCard from './Skeletons/SkeletonPostCard';
 import { NavLink } from 'react-router-dom';
 import formatDate from '../utils/Formatdate';
