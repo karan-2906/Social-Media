@@ -14,7 +14,7 @@ const PostCard = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [isloading, setisLoading] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const {savePost}=useSavePost();
+  const { savePost } = useSavePost();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -51,12 +51,12 @@ const PostCard = ({ post }) => {
     }
   };
 
-  const handleSaveClick=async(postID)=>{
-    await savePost(postID); 
-    
+  const handleSaveClick = async (postID) => {
+    await savePost(postID);
+
   }
   const isPostByCurrentUser = post.author?.id === user?._id;
-  const loggedInUserId=user? user._id : null;
+  const loggedInUserId = user ? user._id : null;
   const isPostSavedByUser = post.savedBy.includes(loggedInUserId);
 
   if (isloading) {
@@ -64,7 +64,7 @@ const PostCard = ({ post }) => {
   }
 
   return (
-    <div className=" text-white p-4 shadow-md rounded-lg" style={{backgroundColor: '#201c1c'}}>
+    <div className=" text-white p-4 shadow-md rounded-lg bg-slate-400" >
       <div className="flex gap-4">
         <NavLink to={`/profile/${post.author?.id}`}>
           <div className="flex items-center gap-2">
@@ -78,41 +78,41 @@ const PostCard = ({ post }) => {
         </NavLink>
       </div>
       <p className="text-white mt-2">{post.content}</p>
-      <div className="flex items-center mt-4">
-        <button
-          onClick={() => handleLikeClick(post._id)}
-          className={`mr-2 text-white flex items-center focus:outline-none ${
-            liked ? 'text-orange-500' : ''
-          }`}
-        >
-          <FaThumbsUp className="mr-1" />
-          {post.likes?.length || 0}
-        </button>
-        <NavLink to={`/comments/${post._id}`}>
+      <div className="flex items-center mt-4 justify-between">
+        <div className='flex items-center gap-2'>
           <button
-            className="mr-2 text-white hover:text-blue-500 flex items-center focus:outline-none"
+            onClick={() => handleLikeClick(post._id)}
+            className={`mr-2 text-white flex items-center focus:outline-none ${liked ? 'text-orange-500' : ''
+              }`}
           >
-            <FaComment className="mr-1" />
-            {post.comments?.length || 0}
+            <FaThumbsUp className="mr-1" />
+            {post.likes?.length || 0}
           </button>
-        </NavLink>
-        <button
-      className={`bg-black ${isPostSavedByUser ? 'text-blue-900' : 'text-white'} w-5 h-10 rounded-full flex items-center justify-center shadow-lg ${
-        isPostSavedByUser ? 'hover:text-blue-600' : 'hover:text-gray-300'
-      } focus:outline-none`}
-      onClick={() => handleSaveClick(post._id)}
-    >
-      <FaBookmark className="text-xl" />
-    </button>
-         
-      </div>
-      <div className='flex'>
-     
+          <NavLink to={`/comments/${post._id}`}>
+            <button
+              className="mr-2 text-white hover:text-blue-500 flex items-center focus:outline-none"
+            >
+              <FaComment className="mr-1" />
+              {post.comments?.length || 0}
+            </button>
+          </NavLink>
+          <button
+            className={`bg-black ${isPostSavedByUser ? 'text-blue-500' : 'text-white'} w-5 h-10 rounded-full flex items-center justify-center shadow-lg ${isPostSavedByUser ? 'hover:text-blue-600' : 'hover:text-gray-300'
+              } focus:outline-none`}
+            onClick={() => handleSaveClick(post._id)}
+          >
+            <FaBookmark className="text-xl" />
+          </button>
+        </div>
 
-        <div className="text-blue-600 text-sm mt-2">{formatDate(post.createdAt)}</div>
+        <div className='flex'>
+
+
+          <div className="text-blue-600 text-sm mt-2">{formatDate(post.createdAt)}</div>
+        </div>
       </div>
-     
-   
+
+
     </div>
   );
 };

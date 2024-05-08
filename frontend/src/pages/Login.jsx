@@ -35,7 +35,7 @@ const Login = () => {
   return (
     <div>
       <ToastContainer />
-      <div className="min-h-screen flex items-center justify-center bg-black">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="max-w-md w-full p-6 bg-gray-300 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-6">
             Welcome to Anonymous Social Posting!
