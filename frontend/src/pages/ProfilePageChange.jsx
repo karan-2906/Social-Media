@@ -1,11 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
-import PostCard from '../components/PostCard';
-import Sidebar from '../components/Sidebar';
 import { NavLink, Navigate, useParams } from 'react-router-dom';
-import formatDate  from '../utils/Formatdate';
 import SkeletonProfilePage from '../components/Skeletons/SkeletonProfilePage';
-import { FaHome } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo ,useUpdateProfile} from '../hooks/auth';
 import { useDelete,useUpdate } from '../hooks/posts';
