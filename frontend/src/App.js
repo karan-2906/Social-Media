@@ -10,7 +10,7 @@ import Signup from "./pages/Signup";
 import ProfilePage from "./pages/ProfilePage";
 import PageNotFound from "./pages/PageNotFound";
 import CommentsPage from "./pages/CommentPage";
-import ProfilePageChange from "./pages/ProfilePageChange";
+
 
 function App() {
   return (
